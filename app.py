@@ -1,3 +1,11 @@
+import streamlit as st
+from deck import Deck
+from player import Player
+
+
+
+
+
 if "balance" not in st.session_state:
     st.session_state.balance = 10000
 if "deck" not in st.session_state:
@@ -15,9 +23,6 @@ if "result" not in st.session_state:
 if "stats" not in st.session_state:
     st.session_state.stats = {"giocate": 0, "vittorie": 0, "sconfitte": 0, "pareggi": 0}
 
-import streamlit as st
-from deck import Deck
-from player import Player
 
 st.set_page_config(page_title="Blackjack", layout="centered")
 
