@@ -1,3 +1,19 @@
+if "balance" not in st.session_state:
+    st.session_state.balance = 10000
+if "deck" not in st.session_state:
+    st.session_state.deck = Deck()
+if "player" not in st.session_state:
+    st.session_state.player = Player("Giocatore")
+if "dealer" not in st.session_state:
+    st.session_state.dealer = Player("Dealer")
+if "bet" not in st.session_state:
+    st.session_state.bet = 1
+if "in_game" not in st.session_state:
+    st.session_state.in_game = False
+if "result" not in st.session_state:
+    st.session_state.result = ""
+if "stats" not in st.session_state:
+    st.session_state.stats = {"giocate": 0, "vittorie": 0, "sconfitte": 0, "pareggi": 0}
 
 import streamlit as st
 from deck import Deck
