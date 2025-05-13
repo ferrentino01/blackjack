@@ -1,4 +1,4 @@
-pip install streamlit
+
 import streamlit as st
 from deck import Deck
 from player import Player
