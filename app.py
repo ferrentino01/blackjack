@@ -2,10 +2,9 @@ import streamlit as st
 from deck import Deck
 from player import Player
 
+st.set_page_config(page_title="Blackjack", layout="centered")
 
-
-
-
+# 🔄 Inizializzazione variabili session_state
 if "balance" not in st.session_state:
     st.session_state.balance = 10000
 if "deck" not in st.session_state:
@@ -23,20 +22,7 @@ if "result" not in st.session_state:
 if "stats" not in st.session_state:
     st.session_state.stats = {"giocate": 0, "vittorie": 0, "sconfitte": 0, "pareggi": 0}
 
-
-st.set_page_config(page_title="Blackjack", layout="centered")
-
-# Inizializza sessione
-if "balance" not in st.session_state:
-    st.session_state.balance = 10000
-    st.session_state.deck = Deck()
-    st.session_state.player = Player("Giocatore")
-    st.session_state.dealer = Player("Dealer")
-    st.session_state.bet = 1
-    st.session_state.in_game = False
-    st.session_state.result = ""
-    st.session_state.stats = {"giocate": 0, "vittorie": 0, "sconfitte": 0, "pareggi": 0}
-
+# 🔁 Funzioni principali
 def reset_game():
     st.session_state.deck = Deck()
     st.session_state.player = Player("Giocatore")
@@ -74,21 +60,21 @@ def end_game():
 
     st.session_state.in_game = False
 
-# UI
+# 🧩 UI principale
 st.title("🃏 Blackjack Web Game")
-st.write(f"💰 Saldo: {st.session_state.balance} monete")
+st.write(f"💰 Saldo attuale: **{st.session_state.balance} monete**")
 
 if not st.session_state.in_game:
-    st.number_input("Quanto vuoi puntare?", min_value=1, max_value=st.session_state.balance, value=1, step=1, key="bet")
+    st.session_state.bet = st.number_input("Quanto vuoi puntare?", min_value=1, max_value=st.session_state.balance, value=1, step=1)
     if st.button("Inizia partita"):
         reset_game()
 
 if st.session_state.in_game:
-    st.subheader("Le tue carte:")
+    st.subheader("🃤 Le tue carte:")
     st.write(st.session_state.player.show_hand())
-    st.write(f"Punti: {st.session_state.player.calculate_points()}")
+    st.write(f"Totale: **{st.session_state.player.calculate_points()} punti**")
 
-    st.subheader("Carte del dealer:")
+    st.subheader("🤖 Carte del dealer:")
     st.write("[??]", *(str(c) for c in st.session_state.dealer.hand[1:]))
 
     col1, col2 = st.columns(2)
@@ -102,15 +88,14 @@ if st.session_state.in_game:
             end_game()
 
 if st.session_state.result:
-    st.subheader("🧾 Risultato:")
+    st.markdown("---")
+    st.subheader("📢 Risultato finale:")
     st.success(st.session_state.result)
-    st.write("Carte dealer:", st.session_state.dealer.show_hand())
-    st.write(f"Punti: {st.session_state.dealer.calculate_points()}")
+    st.write(f"Carte del dealer: {st.session_state.dealer.show_hand()} — {st.session_state.dealer.calculate_points()} punti")
+    st.write(f"Carte del giocatore: {st.session_state.player.show_hand()} — {st.session_state.player.calculate_points()} punti")
     if st.button("Nuova partita"):
         reset_game()
 
-# Statistiche
+# 📊 Statistiche
 with st.expander("📊 Statistiche"):
     st.write(st.session_state.stats)
-
-
