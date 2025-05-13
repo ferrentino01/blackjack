@@ -4,7 +4,7 @@ from player import Player
 
 st.set_page_config(page_title="Blackjack", layout="centered")
 
-# 🔄 Inizializzazione session_state
+# Inizializzazione variabili
 if "balance" not in st.session_state:
     st.session_state.balance = 10000
 if "deck" not in st.session_state:
@@ -24,7 +24,7 @@ if "stats" not in st.session_state:
 if "last_card" not in st.session_state:
     st.session_state.last_card = None
 
-# 🎯 Funzione per avviare nuova partita
+# Funzioni
 def reset_game():
     st.session_state.deck = Deck()
     st.session_state.player = Player("Giocatore")
@@ -36,7 +36,6 @@ def reset_game():
     st.session_state.result = ""
     st.session_state.last_card = None
 
-# 📋 Funzione per concludere partita
 def end_game():
     dealer = st.session_state.dealer
     while dealer.calculate_points() < 17:
@@ -64,9 +63,9 @@ def end_game():
 
     st.session_state.in_game = False
 
-# 🧩 Interfaccia utente
+# UI
 st.title("🃏 Blackjack Web Game")
-st.write(f"💰 Saldo attuale: **{st.session_state.balance} monete**")
+st.write(f"💰 Saldo: **{st.session_state.balance} monete**")
 
 if not st.session_state.in_game:
     st.session_state.bet = st.number_input("Quanto vuoi puntare?", min_value=1, max_value=st.session_state.balance, value=1, step=1)
@@ -74,19 +73,19 @@ if not st.session_state.in_game:
         reset_game()
 
 if st.session_state.in_game:
-    st.subheader("🃤 Le tue carte:")
-    st.write(st.session_state.player.show_hand())
-    st.write(f"Totale: **{st.session_state.player.calculate_points()} punti**")
-
+    st.subheader("Le tue carte:")
+    st.image([card.get_filename() for card in st.session_state.player.hand], width=90)
+    st.write(f"Punti: **{st.session_state.player.calculate_points()}**")
     if st.session_state.last_card:
         st.info(f"Hai pescato: **{st.session_state.last_card}**")
 
-    st.subheader("🤖 Carte del dealer:")
+    st.subheader("Carte del dealer:")
     if st.session_state.in_game:
-        st.write("[??]", *(str(c) for c in st.session_state.dealer.hand[1:]))
+        dealer_cards = ["images/back.png"] + [card.get_filename() for card in st.session_state.dealer.hand[1:]]
+        st.image(dealer_cards, width=90)
     else:
-        st.write(st.session_state.dealer.show_hand())
-        st.write(f"Totale: {st.session_state.dealer.calculate_points()} punti")
+        st.image([card.get_filename() for card in st.session_state.dealer.hand], width=90)
+        st.write(f"Punti: **{st.session_state.dealer.calculate_points()}**")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -96,20 +95,20 @@ if st.session_state.in_game:
             st.session_state.last_card = new_card
             if st.session_state.player.calculate_points() > 21:
                 end_game()
+            st.experimental_rerun()
     with col2:
         if st.button("Stai"):
             st.session_state.last_card = None
             end_game()
+            st.experimental_rerun()
 
 if st.session_state.result:
-    st.markdown("---")
-    st.subheader("📢 Risultato finale:")
+    st.subheader("📢 Risultato:")
     st.success(st.session_state.result)
-    st.write(f"Carte del dealer: {st.session_state.dealer.show_hand()} — {st.session_state.dealer.calculate_points()} punti")
-    st.write(f"Carte del giocatore: {st.session_state.player.show_hand()} — {st.session_state.player.calculate_points()} punti")
     if st.button("Nuova partita"):
         reset_game()
+        st.experimental_rerun()
 
-# 📊 Statistiche
+# Statistiche
 with st.expander("📊 Statistiche"):
     st.write(st.session_state.stats)
