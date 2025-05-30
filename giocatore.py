@@ -29,5 +29,4 @@ class Giocatore:
             assi -= 1
         return totale
 
-    def aggiorna_sconfitte(self):
-        self.sconfitte += 1
+   
