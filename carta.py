@@ -1,4 +1,5 @@
 
+
 class Carta:
     def __init__(self, seme, valore):
         self.seme = seme
