@@ -25,3 +25,4 @@ Permette di sfidare un dealer automatico, gestendo saldo, punteggio, logica di s
 git clone https://github.com/ferrentino01/blackjack
 cd blackjack
 pip install -r requirements.txt
+.
