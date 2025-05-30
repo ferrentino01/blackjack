@@ -4,7 +4,7 @@ from carta import Carta
 class Giocatore:
     def __init__(self):
         self.saldo = 1000
-        self.sconfitte = 0
+        
         self.mano = []
 
     def punta(self, importo):
