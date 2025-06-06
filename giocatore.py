@@ -1,4 +1,3 @@
-
 from partecipante import Partecipante
 
 class Giocatore(Partecipante):
