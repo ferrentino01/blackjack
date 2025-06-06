@@ -24,7 +24,7 @@ if not stato["in_corso"]:
     puntata = st.slider("Scegli la puntata", 1, stato["saldo"], 1)
     if st.button("🎮 Inizia nuova mano"):
         partita.nuova_mano(puntata)
-        st.experimental_rerun()
+        st.rerun()
 
 if stato["in_corso"]:
     st.subheader("Tua mano:")
@@ -36,11 +36,11 @@ if stato["in_corso"]:
         with col1:
             if st.button("🂱 Pesca carta"):
                 partita.pesca_giocatore()
-                st.experimental_rerun()
+                st.rerun()
         with col2:
             if st.button("✋ Stai"):
                 partita.stai()
-                st.experimental_rerun()
+                st.rerun()
 
     if stato["fine_mano"]:
         st.subheader("Mano del dealer:")
@@ -51,4 +51,4 @@ if stato["in_corso"]:
 
 if st.button("♻️ Reset gioco"):
     del st.session_state["partita"]
-    st.experimental_rerun()
+    st.rerun()
