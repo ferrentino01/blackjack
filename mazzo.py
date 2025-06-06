@@ -1,4 +1,3 @@
-
 import random
 from carta import Carta
 
@@ -8,9 +7,6 @@ class Mazzo:
 
     def __init__(self):
         self.carte = [Carta(seme, valore) for seme in self.semi for valore in self.valori]
-        self.mescola()
-
-    def mescola(self):
         random.shuffle(self.carte)
 
     def pesca(self):
