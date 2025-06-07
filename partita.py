@@ -13,7 +13,7 @@ class Partita:
         self.storico = []
 
     def nuova_mano(self, puntata):
-        if not self.giocatore.punta(puntata):
+        if puntata <= 0 or puntata > self.giocatore.saldo:
             self.esito = "Saldo insufficiente o puntata non valida"
             return False
 
@@ -22,6 +22,8 @@ class Partita:
         self.dealer.reset_mano()
         self.in_corso = True
         self.fine_mano = False
+        self.puntata_corrente = puntata
+        self.giocatore.aggiorna_saldo(-puntata)
 
         for _ in range(2):
             self.giocatore.ricevi_carta(self.mazzo.pesca())
@@ -35,7 +37,6 @@ class Partita:
             if self.giocatore.calcola_punteggio() > 21:
                 self.fine_mano = True
                 self.in_corso = False
-                self.giocatore.aggiorna_sconfitte()
                 self.esito = "❌ Sconfitta (sballato)"
                 self.salva_storico()
         return self.esito
@@ -55,18 +56,14 @@ class Partita:
 
         if punteggio_g > 21:
             self.esito = "Sconfitta"
-            self.giocatore.aggiorna_sconfitte()
         elif punteggio_d > 21 or punteggio_g > punteggio_d:
-            self.giocatore.saldo += self.giocatore.puntata * 2
+            self.giocatore.aggiorna_saldo(self.puntata_corrente * 2)
             self.esito = "Vittoria"
-            self.giocatore.aggiorna_vittorie()
         elif punteggio_g == punteggio_d:
-            self.giocatore.saldo += self.giocatore.puntata
+            self.giocatore.aggiorna_saldo(self.puntata_corrente)
             self.esito = "Pareggio"
-            self.giocatore.aggiorna_pareggi()
         else:
             self.esito = "Sconfitta"
-            self.giocatore.aggiorna_sconfitte()
         self.salva_storico()
 
     def stato(self):
@@ -76,9 +73,6 @@ class Partita:
             "punteggio_giocatore": self.giocatore.calcola_punteggio(),
             "punteggio_dealer": self.dealer.calcola_punteggio(),
             "saldo": self.giocatore.saldo,
-            "vittorie": self.giocatore.vittorie,
-            "sconfitte": self.giocatore.sconfitte,
-            "pareggi": self.giocatore.pareggi,
             "in_corso": self.in_corso,
             "fine_mano": self.fine_mano,
             "esito": self.esito,
