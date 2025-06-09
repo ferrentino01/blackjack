@@ -11,6 +11,9 @@ class Partita:
         self.fine_mano = False
         self.esito = ""
         self.storico = []
+        self.vittorie = 0
+        self.sconfitte = 0
+        self.pareggi = 0
 
     def nuova_mano(self, puntata):
         if puntata <= 0 or puntata > self.giocatore.saldo:
@@ -38,6 +41,7 @@ class Partita:
                 self.fine_mano = True
                 self.in_corso = False
                 self.esito = "❌ Sconfitta (sballato)"
+                self.sconfitte += 1
                 self.salva_storico()
         return self.esito
 
@@ -55,16 +59,26 @@ class Partita:
         punteggio_d = self.dealer.calcola_punteggio()
 
         if punteggio_g > 21:
-            self.esito = "Sconfitta"
+            self.esito = "❌ Sconfitta"
+            self.sconfitte += 1
         elif punteggio_d > 21 or punteggio_g > punteggio_d:
             self.giocatore.aggiorna_saldo(self.puntata_corrente * 2)
-            self.esito = "Vittoria"
+            self.esito = "✅ Vittoria"
+            self.vittorie += 1
         elif punteggio_g == punteggio_d:
             self.giocatore.aggiorna_saldo(self.puntata_corrente)
-            self.esito = "Pareggio"
+            self.esito = "🤝 Pareggio"
+            self.pareggi += 1
         else:
-            self.esito = "Sconfitta"
+            self.esito = "❌ Sconfitta"
+            self.sconfitte += 1
         self.salva_storico()
+
+    def salva_storico(self):
+        self.storico.append((self.esito, (
+            self.giocatore.calcola_punteggio(),
+            self.dealer.calcola_punteggio()
+        )))
 
     def stato(self):
         return {
@@ -76,11 +90,8 @@ class Partita:
             "in_corso": self.in_corso,
             "fine_mano": self.fine_mano,
             "esito": self.esito,
-            "storico": self.storico[-10:][::-1]
+            "storico": self.storico[-10:][::-1],
+            "vittorie": self.vittorie,
+            "sconfitte": self.sconfitte,
+            "pareggi": self.pareggi
         }
-
-    def salva_storico(self):
-        self.storico.append((self.esito, (
-            self.giocatore.calcola_punteggio(),
-            self.dealer.calcola_punteggio()
-        )))
