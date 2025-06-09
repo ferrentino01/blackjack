@@ -24,3 +24,6 @@ class Giocatore(Partecipante):
 
     def aggiorna_pareggi(self):
         self.pareggi += 1
+
+    def aggiorna_saldo(self, importo):
+        self.saldo += importo
