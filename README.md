@@ -1,28 +1,44 @@
+🃏 Blackjack LLM – Web App in Streamlit
+🔗 Demo live: Gioca ora su Streamlit
 
-# Blackjack in Python con Streamlit
+🎯 Obiettivo del progetto
+Questa applicazione implementa un gioco di Blackjack completo, sviluppato in Python e reso accessibile tramite Streamlit. Il sistema permette all’utente di:
 
-Gioco interattivo di **Blackjack** sviluppato in Python, con interfaccia grafica tramite [Streamlit](https://streamlit.io/).  
-Permette di sfidare un dealer automatico, gestendo saldo, punteggio, logica di sballo e uno storico delle mani giocate.
+Giocare contro il dealer (CPU)
 
-🔗 **Demo online:**  
-👉 [Gioca ora su Streamlit](https://blackjack-bdiggecjmqtjjk2y4dtsgs.streamlit.app)
+Gestire un saldo iniziale
 
-📦 **Codice sorgente:**  
-👉 [Repository GitHub](https://github.com/ferrentino01/blackjack)
+Puntare, pescare carte e fermare la mano
 
----
+Visualizzare l’esito della partita e lo storico delle ultime mani
 
-## 🚀 Come eseguire il progetto localmente
+🧱 Architettura del codice
+Il progetto è strutturato in modo modulare e OOP, con le seguenti classi principali:
 
-### Requisiti
+Classe	Responsabilità
+Carta	Rappresenta una carta da gioco (valore + seme)
+Mazzo	Gestisce la creazione e la distribuzione delle carte
+Partecipante	Superclasse per Giocatore e Dealer, gestisce la mano
+Giocatore	Include saldo, puntate e contatori vittorie/sconfitte
+Dealer	Erede di Partecipante, segue regole fisse del banco
+Partita	Coordina le interazioni tra giocatore, dealer e mazzo
 
-- Python 3.8 o superiore
-- Libreria `streamlit`
+🎮 Funzionalità principali
+✅ Saldo iniziale e gestione delle puntate
 
-### Installazione
+✅ Logica completa del Blackjack (21, sballo, pareggio, vittoria)
 
-```bash
-git clone https://github.com/ferrentino01/blackjack
-cd blackjack
-pip install -r requirements.txt
-.
+✅ Statistiche di vittorie, sconfitte e pareggi
+
+✅ Interfaccia web semplice e interattiva
+
+✅ Storico visivo delle ultime 10 mani
+
+🧠 Tecnologie usate
+Python 3.11+
+
+Streamlit per la UI
+
+OOP per la logica di gioco
+
+PlantUML per la modellazione UML del progetto
